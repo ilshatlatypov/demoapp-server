@@ -8,6 +8,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 @Entity
@@ -26,6 +27,7 @@ public class User {
     private String username;
     @NotBlank
     private String password;
+    @NotNull
     @Enumerated(EnumType.STRING)
     private Role role;
 
