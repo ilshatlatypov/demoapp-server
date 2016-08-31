@@ -36,7 +36,8 @@ public class User {
     @OneToMany(mappedBy = "user")
     private Set<Task> tasks;
 
-    public User() {}
+    public User() {
+    }
 
     public User(String firstname, String lastname, String username, String password, Role role) {
         this.firstname = firstname;

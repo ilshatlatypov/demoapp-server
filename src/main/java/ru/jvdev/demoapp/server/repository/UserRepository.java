@@ -1,8 +1,9 @@
 package ru.jvdev.demoapp.server.repository;
 
-import ru.jvdev.demoapp.server.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import ru.jvdev.demoapp.server.entity.User;
 
 /**
  * Created by ilshat on 29.07.16.

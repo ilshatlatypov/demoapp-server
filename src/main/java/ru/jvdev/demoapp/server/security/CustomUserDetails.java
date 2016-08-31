@@ -1,11 +1,12 @@
 package ru.jvdev.demoapp.server.security;
 
-import ru.jvdev.demoapp.server.entity.User;
+import java.util.Collection;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
+import ru.jvdev.demoapp.server.entity.User;
 
 /**
  * @author <a href="mailto:ilatypov@wiley.com">Ilshat Latypov</a>

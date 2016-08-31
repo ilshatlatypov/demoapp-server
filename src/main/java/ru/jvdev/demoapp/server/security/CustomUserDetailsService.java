@@ -1,13 +1,14 @@
 package ru.jvdev.demoapp.server.security;
 
-import ru.jvdev.demoapp.server.entity.User;
-import ru.jvdev.demoapp.server.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import ru.jvdev.demoapp.server.entity.User;
+import ru.jvdev.demoapp.server.repository.UserRepository;
 
 /**
  * @author <a href="mailto:ilatypov@wiley.com">Ilshat Latypov</a>
