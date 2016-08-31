@@ -1,4 +1,4 @@
-package hello.entity;
+package ru.jvdev.demoapp.server.entity;
 
 import org.hibernate.validator.constraints.NotBlank;
 

@@ -1,4 +1,4 @@
-package hello.entity;
+package ru.jvdev.demoapp.server.entity;
 
 /**
  * Created by ilshat on 31.08.16.

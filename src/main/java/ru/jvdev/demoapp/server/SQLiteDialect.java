@@ -1,4 +1,4 @@
-package hello;
+package ru.jvdev.demoapp.server;
 
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.function.SQLFunctionTemplate;

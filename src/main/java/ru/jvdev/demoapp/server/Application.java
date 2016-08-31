@@ -1,10 +1,10 @@
-package hello;
+package ru.jvdev.demoapp.server;
 
-import hello.entity.Role;
-import hello.entity.Task;
-import hello.entity.User;
-import hello.repository.TaskRepository;
-import hello.repository.UserRepository;
+import ru.jvdev.demoapp.server.entity.Role;
+import ru.jvdev.demoapp.server.entity.Task;
+import ru.jvdev.demoapp.server.entity.User;
+import ru.jvdev.demoapp.server.repository.TaskRepository;
+import ru.jvdev.demoapp.server.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

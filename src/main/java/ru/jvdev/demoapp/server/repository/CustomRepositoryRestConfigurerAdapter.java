@@ -1,4 +1,4 @@
-package hello.repository;
+package ru.jvdev.demoapp.server.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;

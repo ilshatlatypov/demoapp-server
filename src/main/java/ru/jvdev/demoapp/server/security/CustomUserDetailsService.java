@@ -1,7 +1,7 @@
-package hello.security;
+package ru.jvdev.demoapp.server.security;
 
-import hello.entity.User;
-import hello.repository.UserRepository;
+import ru.jvdev.demoapp.server.entity.User;
+import ru.jvdev.demoapp.server.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

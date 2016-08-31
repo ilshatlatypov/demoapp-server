@@ -1,6 +1,6 @@
-package hello.repository;
+package ru.jvdev.demoapp.server.repository;
 
-import hello.entity.User;
+import ru.jvdev.demoapp.server.entity.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 

@@ -1,6 +1,6 @@
-package hello.security;
+package ru.jvdev.demoapp.server.security;
 
-import hello.entity.User;
+import ru.jvdev.demoapp.server.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;

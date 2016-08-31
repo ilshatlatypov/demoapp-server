@@ -1,6 +1,6 @@
-package hello.repository;
+package ru.jvdev.demoapp.server.repository;
 
-import hello.entity.User;
+import ru.jvdev.demoapp.server.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
