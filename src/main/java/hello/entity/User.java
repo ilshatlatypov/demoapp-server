@@ -1,18 +1,14 @@
 package hello.entity;
 
-import java.util.Set;
+import org.hibernate.validator.constraints.NotBlank;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.validation.constraints.Pattern;
-
-import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
 public class User {
@@ -30,25 +26,21 @@ public class User {
     private String username;
     @NotBlank
     private String password;
-
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH})
-    @JoinTable(name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-    private Set<Role> roles;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     public User() {}
 
-    public User(String firstname, String lastname, String username, String password, Set<Role> roles) {
+    public User(String firstname, String lastname, String username, String password, Role role) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.username = username;
         this.password = password;
-        this.roles = roles;
+        this.role = role;
     }
 
     public User(User user) {
-        this(user.firstname, user.lastname, user.username, user.password, user.roles);
+        this(user.firstname, user.lastname, user.username, user.password, user.role);
         this.id = user.id;
     }
 
@@ -92,11 +84,11 @@ public class User {
         this.password = password;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

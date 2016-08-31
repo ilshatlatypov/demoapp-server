@@ -1,13 +1,11 @@
 package hello.security;
 
-import hello.entity.Role;
 import hello.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 /**
  * @author <a href="mailto:ilatypov@wiley.com">Ilshat Latypov</a>
@@ -23,7 +21,8 @@ public class CustomUserDetails extends User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        String roles = getRoles().stream().map(Role::getName).collect(Collectors.joining(","));
+        //String roles = getRoles().stream().map(Role::getName).collect(Collectors.joining(","));
+        String roles = getRole().name();
         return AuthorityUtils.commaSeparatedStringToAuthorityList(roles);
     }
 

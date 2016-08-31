@@ -33,16 +33,9 @@ public class Application implements CommandLineRunner {
     }
 
     private void createUsersAndTasks() {
-        Role roleA = new Role("ROLE_ADMIN");
-        Role roleB = new Role("ROLE_USER");
-
         userRepository.save(new HashSet<User>() {{
-            add(new User("Ilshat", "Latypov", "ilatypov", "4495", /* encodePassword("ilatypov", "4495"), */ new HashSet<Role>() {{
-                add(roleA);
-            }}));
-            add(new User("Michael", "Scott", "mscott", "1080", /* encodePassword("mscott", "1080"), */  new HashSet<Role>() {{
-                add(roleA);
-            }}));
+            add(new User("Ilshat", "Latypov", "ilatypov", "4495", Role.ADMIN));
+            add(new User("Michael", "Scott", "mscott", "1080",  Role.MANAGER));
         }});
 
         taskRepository.save(new HashSet<Task>() {{

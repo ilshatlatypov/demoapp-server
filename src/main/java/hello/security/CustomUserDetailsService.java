@@ -26,7 +26,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (null == user) {
             throw new UsernameNotFoundException("No user present with username: " + username);
         } else {
-            user.getRoles().size(); // hibernate lazy load
+            // user.getRoles().size(); // hibernate lazy load
             return new CustomUserDetails(user);
         }
     }
