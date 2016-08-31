@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -18,6 +20,9 @@ public class Task {
     private int id;
     @NotBlank
     private String title;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Task() {
     }
@@ -40,5 +45,13 @@ public class Task {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
