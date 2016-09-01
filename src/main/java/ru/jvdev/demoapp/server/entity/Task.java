@@ -9,10 +9,13 @@ import javax.persistence.ManyToOne;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import lombok.Data;
+
 /**
  * Created by ilshat on 04.08.16.
  */
 @Entity
+@Data
 public class Task {
 
     @Id
@@ -24,34 +27,10 @@ public class Task {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Task() {
-    }
+    // required for JPA
+    public Task() {}
 
     public Task(String title) {
         this.title = title;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 }
