@@ -48,9 +48,4 @@ public class User {
         this.password = password;
         this.role = role;
     }
-
-    public User(User user) {
-        this(user.firstname, user.lastname, user.username, user.password, user.role);
-        this.id = user.id;
-    }
 }
