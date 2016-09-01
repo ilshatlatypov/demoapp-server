@@ -15,7 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
  */
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -30,6 +30,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
             .authorizeRequests()
+                .antMatchers("/").permitAll()
                 .anyRequest().authenticated()
                 .and()
             .httpBasic()
