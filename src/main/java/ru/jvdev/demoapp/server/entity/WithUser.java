@@ -10,6 +10,7 @@ import org.springframework.data.rest.core.config.Projection;
  */
 @Projection(name = "withUser", types = { Task.class })
 public interface WithUser {
+    int getId();
     String getTitle();
     Date getDate();
     User getUser();
