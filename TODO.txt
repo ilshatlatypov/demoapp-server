@@ -1,0 +1,14 @@
+Tests
+    make tests reliable
+    create test data inside tests, not in Application
+    get rid of duplications in test classes
+
+Security
+    only manager can set user for task via /tasks/1/user
+    do not drop-create data on each startup, add mode for filling data
+
+Other
+    add date for task
+    get tasks sorted by date
+    add comments for task
+    add 'done' field
