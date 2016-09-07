@@ -10,6 +10,7 @@ import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.ResourceSupport;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +30,7 @@ public class UserController {
     TaskRepository taskRepository;
 
     @RequestMapping(method = PUT, path = "/users/{id}/tasks", consumes = "text/uri-list")
+    @PreAuthorize("hasAuthority('MANAGER')")
     public @ResponseBody ResponseEntity<?> assignTasksToUser(@PathVariable("id") int userId,
                                                              @RequestBody ResourceSupport taskURIs) {
         Set<Integer> taskIds = taskURIs.getLinks().stream()
@@ -40,6 +42,7 @@ public class UserController {
     }
 
     @RequestMapping(method = DELETE, path = "/users/{userId}/tasks/{taskId}")
+    @PreAuthorize("hasAuthority('MANAGER')")
     public @ResponseBody ResponseEntity<?> unassignTaskFromUser(@PathVariable("userId") int userId,
                                                                 @PathVariable("taskId") int taskId) {
         Task task = taskRepository.findOne(taskId);

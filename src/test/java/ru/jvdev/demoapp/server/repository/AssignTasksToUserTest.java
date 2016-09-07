@@ -2,7 +2,8 @@ package ru.jvdev.demoapp.server.repository;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +25,7 @@ import ru.jvdev.demoapp.server.Application;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
-public class GetUserByUsernameTest {
+public class AssignTasksToUserTest {
 
     private MockMvc mockMvc;
 
@@ -40,33 +41,33 @@ public class GetUserByUsernameTest {
     }
 
     @Test
-    public void testManagerCanGetHisDataByUsername() throws Exception {
-        mockMvc.perform(get("/users/search/findByUsername")
-            .param("username", "mscott")
+    public void testManagerCanAssignTaskToUser() throws Exception {
+        mockMvc.perform(put("/users/1/tasks")
+            .contentType("text/uri-list")
+            .content("http://localhost:8080/tasks/1")
             .with(httpBasic("mscott", "1234")))
-            .andExpect(status().isOk());
+            .andExpect(status().isNoContent());
     }
 
     @Test
-    public void testManagerCanGetOtherUserDataByUsername() throws Exception {
-        mockMvc.perform(get("/users/search/findByUsername")
-            .param("username", "jbauer")
+    public void testManagerCanUnassignTaskFromUser() throws Exception {
+        mockMvc.perform(delete("/users/1/tasks/1")
             .with(httpBasic("mscott", "1234")))
-            .andExpect(status().isOk());
+            .andExpect(status().isNoContent());
     }
 
     @Test
-    public void testEmployeeCanGetHisDataByUsername() throws Exception {
-        mockMvc.perform(get("/users/search/findByUsername")
-            .param("username", "jbauer")
+    public void testEmployeeCannotAssignTaskToUser() throws Exception {
+        mockMvc.perform(put("/users/1/tasks")
+            .contentType("text/uri-list")
+            .content("http://localhost:8080/tasks/1")
             .with(httpBasic("jbauer", "1234")))
-            .andExpect(status().isOk());
+            .andExpect(status().isForbidden());
     }
 
     @Test
-    public void testEmployeeCanNotGetOtherUserDataByUsername() throws Exception {
-        mockMvc.perform(get("/users/search/findByUsername")
-            .param("username", "jconnor")
+    public void testEmployeeCannotUnassignTaskFromUser() throws Exception {
+        mockMvc.perform(delete("/users/1/tasks/1")
             .with(httpBasic("jbauer", "1234")))
             .andExpect(status().isForbidden());
     }
