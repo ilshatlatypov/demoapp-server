@@ -15,9 +15,11 @@ import javax.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.NotBlank;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-@Data
 @Entity
+@Data
+@EqualsAndHashCode(exclude = "tasks")
 public class User {
 
     @Id

@@ -10,12 +10,14 @@ import javax.persistence.ManyToOne;
 import org.hibernate.validator.constraints.NotBlank;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * Created by ilshat on 04.08.16.
  */
 @Entity
 @Data
+@EqualsAndHashCode(exclude = "user")
 public class Task {
 
     @Id
