@@ -1,11 +1,15 @@
 package ru.jvdev.demoapp.server.entity;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -25,6 +29,9 @@ public class Task {
     private int id;
     @NotBlank
     private String title;
+    @NotNull
+    @Future
+    private Date date;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -32,7 +39,8 @@ public class Task {
     // required for JPA
     public Task() {}
 
-    public Task(String title) {
+    public Task(String title, Date date) {
         this.title = title;
+        this.date = date;
     }
 }

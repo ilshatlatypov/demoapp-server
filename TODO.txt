@@ -8,7 +8,5 @@ Security
     do not drop-create data on each startup, add mode for filling data
 
 Other
-    add date for task
-    get tasks sorted by date
     add comments for task
     add 'done' field

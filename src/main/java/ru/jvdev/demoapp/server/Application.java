@@ -2,7 +2,10 @@ package ru.jvdev.demoapp.server;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashSet;
+import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -41,10 +44,15 @@ public class Application implements CommandLineRunner {
             add(new User("John", "Connor", "jconnor", "1234", Role.EMPLOYEE));
         }});
 
+        Calendar cal = new GregorianCalendar(TimeZone.getDefault());
+        cal.add(Calendar.DATE, 3);
+
         taskRepository.save(new HashSet<Task>() {{
-            add(new Task("Deploy to PERF"));
-            add(new Task("Upload data"));
-            add(new Task("Write script"));
+            add(new Task("Deploy to PERF", cal.getTime()));
+            cal.add(Calendar.DATE, -1);
+            add(new Task("Upload data", cal.getTime()));
+            cal.add(Calendar.DATE, 1);
+            add(new Task("Write script",cal.getTime()));
         }});
     }
 
