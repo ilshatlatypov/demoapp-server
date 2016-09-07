@@ -1,3 +1,5 @@
+package ru.jvdev.demoapp.server.repository;
+
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -50,16 +52,18 @@ public class UserRestRepositoryTest {
     }
 
     @Test
+    // @WithMockUser(authorities = "MANAGER")
     public void test3() throws Exception {
         mockMvc.perform(get("/tasks")
-            .with(httpBasic("mscott", "1080")))
+            .with(httpBasic("mscott", "1234")))
             .andExpect(status().isOk());
     }
 
     @Test
+    // @WithMockUser(authorities = "EMPLOYEE")
     public void test4() throws Exception {
         mockMvc.perform(get("/tasks")
-            .with(httpBasic("ilatypov", "4495")))
+            .with(httpBasic("jbauer", "1234")))
             .andExpect(status().isForbidden());
     }
 }

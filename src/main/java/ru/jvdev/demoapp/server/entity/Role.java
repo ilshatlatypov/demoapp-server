@@ -5,8 +5,6 @@ package ru.jvdev.demoapp.server.entity;
  */
 public enum Role {
     NO_ROLE,
-    ADMIN,
-    DIRECTOR,
     MANAGER,
     EMPLOYEE
 }

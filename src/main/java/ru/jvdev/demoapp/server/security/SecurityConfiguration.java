@@ -9,6 +9,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import ru.jvdev.demoapp.server.entity.Role;
+
 /**
  * @author <a href="mailto:ilatypov@wiley.com">Ilshat Latypov</a>
  * @since 27.07.2016
@@ -31,6 +33,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
             .authorizeRequests()
                 .antMatchers("/").permitAll()
+                .antMatchers("/tasks/**").hasAuthority(Role.MANAGER.name())
                 .anyRequest().authenticated()
                 .and()
             .httpBasic()

@@ -36,8 +36,9 @@ public class Application implements CommandLineRunner {
 
     private void createUsersAndTasks() {
         userRepository.save(new HashSet<User>() {{
-            add(new User("Ilshat", "Latypov", "ilatypov", "4495", Role.ADMIN));
-            add(new User("Michael", "Scott", "mscott", "1080", Role.MANAGER));
+            add(new User("Michael", "Scott", "mscott", "1234", Role.MANAGER));
+            add(new User("Jack", "Bauer", "jbauer", "1234", Role.EMPLOYEE));
+            add(new User("John", "Connor", "jconnor", "1234", Role.EMPLOYEE));
         }});
 
         taskRepository.save(new HashSet<Task>() {{
