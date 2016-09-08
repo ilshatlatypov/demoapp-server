@@ -4,7 +4,6 @@ Tests
     different profiles for normal run and for tests
 
 Security
-    only manager can set user for task via /tasks/1/user
     do not drop-create data on each startup, add mode for filling data
 
 Other

@@ -91,4 +91,22 @@ public class AssignTasksToUserTest {
             .with(httpBasic("shawking", "1234")))
             .andExpect(status().isForbidden());
     }
+
+    @Test
+    public void testManagerCanAssignUserToTask() throws Exception {
+        mockMvc.perform(put("/tasks/1/user")
+            .contentType("text/uri-list")
+            .content("http://localhost:8080/users/1")
+            .with(httpBasic("emusk", "1234")))
+            .andExpect(status().isNoContent());
+    }
+
+    @Test
+    public void testEmployeeCanNotAssignUserToTask() throws Exception {
+        mockMvc.perform(put("/tasks/1/user")
+            .contentType("text/uri-list")
+            .content("http://localhost:8080/users/1")
+            .with(httpBasic("shawking", "1234")))
+            .andExpect(status().isForbidden());
+    }
 }
