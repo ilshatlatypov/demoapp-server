@@ -1,7 +1,7 @@
 Tests
-    make tests reliable
-    create test data inside tests, not in Application
+    GetUserByUsernameTest.testEmployeeCanNotGetOtherUserDataByUsername fails from time to time (@PreAuthorize)
     get rid of duplications in test classes
+    different profiles for normal run and for tests
 
 Security
     only manager can set user for task via /tasks/1/user

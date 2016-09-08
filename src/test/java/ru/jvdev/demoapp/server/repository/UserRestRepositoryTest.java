@@ -16,6 +16,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import ru.jvdev.demoapp.server.Application;
+import ru.jvdev.demoapp.server.entity.Role;
+import ru.jvdev.demoapp.server.entity.User;
 
 /**
  * @author <a href="mailto:ilatypov@wiley.com">Ilshat Latypov</a>
@@ -30,6 +32,8 @@ public class UserRestRepositoryTest {
 
     @Autowired
     private WebApplicationContext webApplicationContext;
+    @Autowired
+    private UserRepository userRepository;
 
     @Before
     public void setup() throws Exception {
@@ -37,6 +41,10 @@ public class UserRestRepositoryTest {
             .webAppContextSetup(webApplicationContext)
             .apply(springSecurity())
             .build();
+
+        this.userRepository.deleteAllInBatch();
+        this.userRepository.save(new User("Elon", "Musk", "emusk", "1234", Role.MANAGER));
+        this.userRepository.save(new User("Stephen", "Hawking", "shawking", "1234", Role.EMPLOYEE));
     }
 
     @Test
@@ -55,7 +63,7 @@ public class UserRestRepositoryTest {
     // @WithMockUser(authorities = "MANAGER")
     public void test3() throws Exception {
         mockMvc.perform(get("/tasks")
-            .with(httpBasic("mscott", "1234")))
+            .with(httpBasic("emusk", "1234")))
             .andExpect(status().isOk());
     }
 
@@ -63,7 +71,7 @@ public class UserRestRepositoryTest {
     // @WithMockUser(authorities = "EMPLOYEE")
     public void test4() throws Exception {
         mockMvc.perform(get("/tasks")
-            .with(httpBasic("jbauer", "1234")))
+            .with(httpBasic("shawking", "1234")))
             .andExpect(status().isForbidden());
     }
 }

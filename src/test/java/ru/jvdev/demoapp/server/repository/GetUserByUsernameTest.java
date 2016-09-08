@@ -16,13 +16,15 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import ru.jvdev.demoapp.server.Application;
+import ru.jvdev.demoapp.server.entity.Role;
+import ru.jvdev.demoapp.server.entity.User;
 
 /**
  * @author <a href="mailto:ilatypov@wiley.com">Ilshat Latypov</a>
  * @since 07.09.2016
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class)
+@SpringApplicationConfiguration(classes = { Application.class, UserRestRepository.class })
 @WebAppConfiguration
 public class GetUserByUsernameTest {
 
@@ -30,6 +32,8 @@ public class GetUserByUsernameTest {
 
     @Autowired
     private WebApplicationContext webApplicationContext;
+    @Autowired
+    private UserRepository userRepository;
 
     @Before
     public void setup() throws Exception {
@@ -37,37 +41,41 @@ public class GetUserByUsernameTest {
             .webAppContextSetup(webApplicationContext)
             .apply(springSecurity())
             .build();
+
+        this.userRepository.deleteAllInBatch();
+        this.userRepository.save(new User("Elon", "Musk", "emusk", "1234", Role.MANAGER));
+        this.userRepository.save(new User("Stephen", "Hawking", "shawking", "1234", Role.EMPLOYEE));
     }
 
     @Test
     public void testManagerCanGetHisDataByUsername() throws Exception {
         mockMvc.perform(get("/users/search/findByUsername")
-            .param("username", "mscott")
-            .with(httpBasic("mscott", "1234")))
+            .param("username", "emusk")
+            .with(httpBasic("emusk", "1234")))
             .andExpect(status().isOk());
     }
 
     @Test
     public void testManagerCanGetOtherUserDataByUsername() throws Exception {
         mockMvc.perform(get("/users/search/findByUsername")
-            .param("username", "jbauer")
-            .with(httpBasic("mscott", "1234")))
+            .param("username", "shawking")
+            .with(httpBasic("emusk", "1234")))
             .andExpect(status().isOk());
     }
 
     @Test
     public void testEmployeeCanGetHisDataByUsername() throws Exception {
         mockMvc.perform(get("/users/search/findByUsername")
-            .param("username", "jbauer")
-            .with(httpBasic("jbauer", "1234")))
+            .param("username", "shawking")
+            .with(httpBasic("shawking", "1234")))
             .andExpect(status().isOk());
     }
 
     @Test
     public void testEmployeeCanNotGetOtherUserDataByUsername() throws Exception {
         mockMvc.perform(get("/users/search/findByUsername")
-            .param("username", "jconnor")
-            .with(httpBasic("jbauer", "1234")))
+            .param("username", "emusk")
+            .with(httpBasic("shawking", "1234")))
             .andExpect(status().isForbidden());
     }
 }
