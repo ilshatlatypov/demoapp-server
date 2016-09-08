@@ -73,10 +73,12 @@ public class SQLiteDialect extends Dialect {
         return "select last_insert_rowid()";
     }
 
+    @SuppressWarnings("deprecation")
     public boolean supportsLimit() {
         return true;
     }
 
+    @SuppressWarnings("deprecation")
     protected String getLimitString(String query, boolean hasOffset) {
         return new StringBuffer(query.length() + 20).
             append(query).
