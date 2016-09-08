@@ -34,6 +34,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
                 .antMatchers("/").permitAll()
                 .antMatchers("/tasks/**").hasAuthority(Role.MANAGER.name())
+                .antMatchers("/users/search/findByUsername")
+                    .access("@accessRules.ifManagerOrUserSearchesHimself(authentication,request)")
                 .anyRequest().authenticated()
                 .and()
             .httpBasic()

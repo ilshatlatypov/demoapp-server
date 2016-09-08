@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import static ru.jvdev.demoapp.server.utils.RequestParamNames.USERNAME;
 import ru.jvdev.demoapp.server.Application;
 import ru.jvdev.demoapp.server.entity.Role;
 import ru.jvdev.demoapp.server.entity.User;
@@ -24,7 +25,7 @@ import ru.jvdev.demoapp.server.entity.User;
  * @since 07.09.2016
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = { Application.class, UserRestRepository.class })
+@SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
 public class GetUserByUsernameTest {
 
@@ -50,7 +51,7 @@ public class GetUserByUsernameTest {
     @Test
     public void testManagerCanGetHisDataByUsername() throws Exception {
         mockMvc.perform(get("/users/search/findByUsername")
-            .param("username", "emusk")
+            .param(USERNAME, "emusk")
             .with(httpBasic("emusk", "1234")))
             .andExpect(status().isOk());
     }
@@ -58,7 +59,7 @@ public class GetUserByUsernameTest {
     @Test
     public void testManagerCanGetOtherUserDataByUsername() throws Exception {
         mockMvc.perform(get("/users/search/findByUsername")
-            .param("username", "shawking")
+            .param(USERNAME, "shawking")
             .with(httpBasic("emusk", "1234")))
             .andExpect(status().isOk());
     }
@@ -66,7 +67,7 @@ public class GetUserByUsernameTest {
     @Test
     public void testEmployeeCanGetHisDataByUsername() throws Exception {
         mockMvc.perform(get("/users/search/findByUsername")
-            .param("username", "shawking")
+            .param(USERNAME, "shawking")
             .with(httpBasic("shawking", "1234")))
             .andExpect(status().isOk());
     }
@@ -74,7 +75,7 @@ public class GetUserByUsernameTest {
     @Test
     public void testEmployeeCanNotGetOtherUserDataByUsername() throws Exception {
         mockMvc.perform(get("/users/search/findByUsername")
-            .param("username", "emusk")
+            .param(USERNAME, "emusk")
             .with(httpBasic("shawking", "1234")))
             .andExpect(status().isForbidden());
     }

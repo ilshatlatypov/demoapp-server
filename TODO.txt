@@ -1,5 +1,4 @@
 Tests
-    GetUserByUsernameTest.testEmployeeCanNotGetOtherUserDataByUsername fails from time to time (@PreAuthorize)
     get rid of duplications in test classes
     different profiles for normal run and for tests
 
