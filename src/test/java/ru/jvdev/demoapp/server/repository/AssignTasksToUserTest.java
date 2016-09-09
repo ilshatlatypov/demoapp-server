@@ -1,5 +1,6 @@
 package ru.jvdev.demoapp.server.repository;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -64,7 +65,7 @@ public class AssignTasksToUserTest {
         cal.add(Calendar.MINUTE, 5);
 
         taskRepository.deleteAllInBatch();
-        taskId = taskRepository.save(new Task("Launch rocket", cal.getTime())).getId();
+        taskId = taskRepository.save(new Task("Launch rocket", LocalDate.now())).getId();
 
         userRepository.deleteAllInBatch();
         userRepository.save(buildUser(MANAGER_USERNAME, PASSWORD, Role.MANAGER));

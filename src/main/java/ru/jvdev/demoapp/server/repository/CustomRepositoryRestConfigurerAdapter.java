@@ -8,6 +8,7 @@ import org.springframework.data.rest.core.event.ValidatingRepositoryEventListene
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;
 import org.springframework.validation.Validator;
 
+import ru.jvdev.demoapp.server.validation.TaskValidator;
 import ru.jvdev.demoapp.server.validation.UserValidator;
 import ru.jvdev.demoapp.server.entity.Task;
 import ru.jvdev.demoapp.server.entity.User;
@@ -24,6 +25,8 @@ public class CustomRepositoryRestConfigurerAdapter extends RepositoryRestConfigu
     Validator validator; // for annotation based validation
     @Autowired
     UserValidator userValidator;
+    @Autowired
+    TaskValidator taskValidator;
 
     @Override
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
@@ -37,5 +40,8 @@ public class CustomRepositoryRestConfigurerAdapter extends RepositoryRestConfigu
 
         validatingListener.addValidator("beforeCreate", userValidator);
         validatingListener.addValidator("beforeSave", userValidator);
+
+        validatingListener.addValidator("beforeCreate", taskValidator);
+        validatingListener.addValidator("beforeSave", taskValidator);
     }
 }

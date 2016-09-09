@@ -31,9 +31,13 @@ dependencies {
 
     compile("org.projectlombok:lombok:1.16.10")
 
+    compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.6.7")
+
     testCompile("org.springframework.boot:spring-boot-starter-test")
     testCompile("org.springframework.security:spring-security-test")
     testCompile("com.h2database:h2")
+
+    testCompile("com.jayway.jsonpath:json-path:2.2.0")
 }
 
 task wrapper(type: Wrapper) {

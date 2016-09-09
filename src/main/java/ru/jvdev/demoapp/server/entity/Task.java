@@ -1,6 +1,6 @@
 package ru.jvdev.demoapp.server.entity;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,10 +8,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -30,8 +34,9 @@ public class Task {
     @NotBlank
     private String title;
     @NotNull
-    @Future
-    private Date date;
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    private LocalDate date;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -39,7 +44,7 @@ public class Task {
     // required for JPA
     public Task() {}
 
-    public Task(String title, Date date) {
+    public Task(String title, LocalDate date) {
         this.title = title;
         this.date = date;
     }

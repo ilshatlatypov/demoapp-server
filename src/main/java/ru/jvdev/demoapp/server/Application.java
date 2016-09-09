@@ -2,6 +2,7 @@ package ru.jvdev.demoapp.server;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
@@ -47,12 +48,11 @@ public class Application implements CommandLineRunner {
         Calendar cal = new GregorianCalendar(TimeZone.getDefault());
         cal.add(Calendar.DATE, 3);
 
+        LocalDate today = LocalDate.now();
         taskRepository.save(new HashSet<Task>() {{
-            add(new Task("Deploy to PERF", cal.getTime()));
-            cal.add(Calendar.DATE, -1);
-            add(new Task("Upload data", cal.getTime()));
-            cal.add(Calendar.DATE, 1);
-            add(new Task("Write script",cal.getTime()));
+            add(new Task("Deploy to PERF", today));
+            add(new Task("Upload data", today.plusDays(1)));
+            add(new Task("Write script", today.plusDays(2)));
         }});
     }
 
