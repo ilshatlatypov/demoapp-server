@@ -2,6 +2,8 @@ package ru.jvdev.demoapp.server.validation;
 
 import java.time.LocalDate;
 
+import javax.persistence.EntityManager;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -17,6 +19,8 @@ import ru.jvdev.demoapp.server.repository.TaskRepository;
 @Component
 public class TaskValidator implements Validator {
 
+    @Autowired
+    EntityManager entityManager;
     @Autowired
     TaskRepository taskRepository;
 
@@ -38,6 +42,7 @@ public class TaskValidator implements Validator {
                 errors.rejectValue("date", "notpast");
             }
         } else {
+            entityManager.detach(t);
             LocalDate existingDate = taskRepository.findOne(id).getDate();
             if (!date.equals(existingDate) && date.isBefore(today)) {
                 errors.rejectValue("date", "notpast");

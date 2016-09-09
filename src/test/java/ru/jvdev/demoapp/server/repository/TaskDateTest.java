@@ -147,25 +147,24 @@ public class TaskDateTest {
             .andExpect(status().isNoContent());
     }
 
-//    TODO
-//    @Test
-//    public void testPastDateIsNotOkIfChangedOnUpdate() throws Exception {
-//        LocalDate yesterday = today.minusDays(1);
-//        Task overdueTask = new Task(TITLE, yesterday);
-//        int taskId = taskRepository.save(overdueTask).getId();
-//
-//        LocalDate dayBeforeYesterday = yesterday.minusDays(2);
-//        Task updatedOverdueTask = new Task("New title", dayBeforeYesterday);
-//
-//        String taskJson = json(updatedOverdueTask);
-//        mockMvc.perform(put("/tasks/" + taskId)
-//            .contentType(MediaType.APPLICATION_JSON)
-//            .content(taskJson))
-//            .andExpect(status().isBadRequest())
-//            .andExpect(jsonPath("$.errors", hasSize(1)))
-//            .andExpect(jsonPath("$.errors[0].property", is("date")))
-//            .andExpect(jsonPath("$.errors[0].message", is("must be today or future date")));
-//    }
+    @Test
+    public void testPastDateIsNotOkIfChangedOnUpdate() throws Exception {
+        LocalDate yesterday = today.minusDays(1);
+        Task overdueTask = new Task(TITLE, yesterday);
+        int taskId = taskRepository.save(overdueTask).getId();
+
+        LocalDate dayBeforeYesterday = yesterday.minusDays(0);
+        Task updatedOverdueTask = new Task(TITLE, dayBeforeYesterday);
+
+        String taskJson = json(updatedOverdueTask);
+        mockMvc.perform(put("/tasks/" + taskId)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(taskJson))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.errors", hasSize(1)))
+            .andExpect(jsonPath("$.errors[0].property", is("date")))
+            .andExpect(jsonPath("$.errors[0].message", is("must be today or future date")));
+    }
 
     private String json(Object o) throws IOException {
         MockHttpOutputMessage mockHttpOutputMessage = new MockHttpOutputMessage();
