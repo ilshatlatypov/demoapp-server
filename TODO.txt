@@ -1,6 +1,3 @@
-Tests
-    get rid of duplications in test classes
-
 Security
     do not drop-create data on each startup, add mode for filling data
 

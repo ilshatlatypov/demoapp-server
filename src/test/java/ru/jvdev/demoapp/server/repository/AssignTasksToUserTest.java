@@ -1,9 +1,7 @@
 package ru.jvdev.demoapp.server.repository;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.List;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
@@ -22,10 +20,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import static ru.jvdev.demoapp.server.repository.TestUtils.buildUser;
+import static ru.jvdev.demoapp.server.utils.URIUtils.buildURIFromId;
 import ru.jvdev.demoapp.server.Application;
 import ru.jvdev.demoapp.server.entity.Role;
 import ru.jvdev.demoapp.server.entity.Task;
-import ru.jvdev.demoapp.server.entity.User;
+import ru.jvdev.demoapp.server.utils.MediaTypes;
 
 /**
  * @author <a href="mailto:ilatypov@wiley.com">Ilshat Latypov</a>
@@ -37,6 +37,10 @@ import ru.jvdev.demoapp.server.entity.User;
 @ActiveProfiles("test")
 public class AssignTasksToUserTest {
 
+    private static final String MANAGER_USERNAME = "managerUser";
+    private static final String EMPLOYEE_USERNAME = "employeeUser";
+    private static final String PASSWORD = "anypassword";
+
     private MockMvc mockMvc;
 
     @Autowired
@@ -46,8 +50,8 @@ public class AssignTasksToUserTest {
     @Autowired
     private TaskRepository taskRepository;
 
-    private List<User> users = new ArrayList<>();
-    private List<Task> tasks = new ArrayList<>();
+    private int taskId;
+    private int userId;
 
     @Before
     public void setup() throws Exception {
@@ -60,60 +64,60 @@ public class AssignTasksToUserTest {
         cal.add(Calendar.MINUTE, 5);
 
         taskRepository.deleteAllInBatch();
-        tasks.add(taskRepository.save(new Task("Launch rocket", cal.getTime())));
+        taskId = taskRepository.save(new Task("Launch rocket", cal.getTime())).getId();
 
         userRepository.deleteAllInBatch();
-        users.add(userRepository.save(new User("Elon", "Musk", "emusk", "1234", Role.MANAGER)));
-        users.add(userRepository.save(new User("Stephen", "Hawking", "shawking", "1234", Role.EMPLOYEE)));
+        userRepository.save(buildUser(MANAGER_USERNAME, PASSWORD, Role.MANAGER));
+        userId = userRepository.save(buildUser(EMPLOYEE_USERNAME, PASSWORD, Role.EMPLOYEE)).getId();
     }
 
     @Test
     public void testManagerCanAssignTaskToUser() throws Exception {
-        mockMvc.perform(put("/users/" + users.get(0).getId() + "/tasks")
-            .contentType("text/uri-list")
-            .content("http://localhost:8080/tasks/" + tasks.get(0).getId())
-            .with(httpBasic("emusk", "1234")))
+        mockMvc.perform(put("/users/" + userId + "/tasks")
+            .contentType(MediaTypes.URI_LIST)
+            .content(buildURIFromId(taskId))
+            .with(httpBasic(MANAGER_USERNAME, PASSWORD)))
             .andExpect(status().isNoContent());
     }
 
     @Test
     public void testManagerCanUnassignTaskFromUser() throws Exception {
-        mockMvc.perform(delete("/users/1/tasks/1")
-            .with(httpBasic("emusk", "1234")))
+        mockMvc.perform(delete("/users/" + userId + "/tasks/" + taskId)
+            .with(httpBasic(MANAGER_USERNAME, PASSWORD)))
             .andExpect(status().isNoContent());
     }
 
     @Test
     public void testEmployeeCannotAssignTaskToUser() throws Exception {
-        mockMvc.perform(put("/users/" + users.get(0).getId() + "/tasks")
-            .contentType("text/uri-list")
-            .content("http://localhost:8080/tasks/" + tasks.get(0).getId())
-            .with(httpBasic("shawking", "1234")))
+        mockMvc.perform(put("/users/" + userId + "/tasks")
+            .contentType(MediaTypes.URI_LIST)
+            .content(buildURIFromId(taskId))
+            .with(httpBasic(EMPLOYEE_USERNAME, PASSWORD)))
             .andExpect(status().isForbidden());
     }
 
     @Test
     public void testEmployeeCannotUnassignTaskFromUser() throws Exception {
-        mockMvc.perform(delete("/users/" + users.get(0).getId() + "/tasks/1")
-            .with(httpBasic("shawking", "1234")))
+        mockMvc.perform(delete("/users/" + userId + "/tasks/" + taskId)
+            .with(httpBasic(EMPLOYEE_USERNAME, PASSWORD)))
             .andExpect(status().isForbidden());
     }
 
     @Test
     public void testManagerCanAssignUserToTask() throws Exception {
-        mockMvc.perform(put("/tasks/" + tasks.get(0).getId() + "/user")
-            .contentType("text/uri-list")
-            .content("http://localhost:8080/users/" + users.get(0).getId())
-            .with(httpBasic("emusk", "1234")))
+        mockMvc.perform(put("/tasks/" + taskId + "/user")
+            .contentType(MediaTypes.URI_LIST)
+            .content(buildURIFromId(taskId))
+            .with(httpBasic(MANAGER_USERNAME, PASSWORD)))
             .andExpect(status().isNoContent());
     }
 
     @Test
-    public void testEmployeeCanNotAssignUserToTask() throws Exception {
-        mockMvc.perform(put("/tasks/" + tasks.get(0).getId() + "/user")
-            .contentType("text/uri-list")
-            .content("http://localhost:8080/users/" + users.get(0).getId())
-            .with(httpBasic("shawking", "1234")))
+    public void testEmployeeCannotAssignUserToTask() throws Exception {
+        mockMvc.perform(put("/tasks/" + taskId + "/user")
+            .contentType(MediaTypes.URI_LIST)
+            .content(buildURIFromId(userId))
+            .with(httpBasic(EMPLOYEE_USERNAME, PASSWORD)))
             .andExpect(status().isForbidden());
     }
 }

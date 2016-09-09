@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import ru.jvdev.demoapp.server.entity.Role;
+import ru.jvdev.demoapp.server.utils.Paths;
 
 /**
  * @author <a href="mailto:ilatypov@wiley.com">Ilshat Latypov</a>
@@ -34,7 +35,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
                 .antMatchers("/").permitAll()
                 .antMatchers("/tasks/**").hasAuthority(Role.MANAGER.name())
-                .antMatchers("/users/search/findByUsername")
+                .antMatchers(Paths.FIND_BY_USERNAME)
                     .access("@accessRules.ifManagerOrUserSearchesHimself(authentication,request)")
                 .anyRequest().authenticated()
                 .and()

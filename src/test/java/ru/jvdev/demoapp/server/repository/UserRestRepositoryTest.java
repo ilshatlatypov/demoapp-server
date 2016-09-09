@@ -16,9 +16,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import static ru.jvdev.demoapp.server.repository.TestUtils.buildUser;
 import ru.jvdev.demoapp.server.Application;
 import ru.jvdev.demoapp.server.entity.Role;
-import ru.jvdev.demoapp.server.entity.User;
 
 /**
  * @author <a href="mailto:ilatypov@wiley.com">Ilshat Latypov</a>
@@ -29,6 +29,10 @@ import ru.jvdev.demoapp.server.entity.User;
 @WebAppConfiguration
 @ActiveProfiles("test")
 public class UserRestRepositoryTest {
+
+    private static final String MANAGER_USERNAME = "managerUser";
+    private static final String EMPLOYEE_USERNAME = "employeeUser";
+    private static final String PASSWORD = "anypassword";
 
     private MockMvc mockMvc;
 
@@ -45,35 +49,35 @@ public class UserRestRepositoryTest {
             .build();
 
         this.userRepository.deleteAllInBatch();
-        this.userRepository.save(new User("Elon", "Musk", "emusk", "1234", Role.MANAGER));
-        this.userRepository.save(new User("Stephen", "Hawking", "shawking", "1234", Role.EMPLOYEE));
+        this.userRepository.save(buildUser(MANAGER_USERNAME, PASSWORD, Role.MANAGER));
+        this.userRepository.save(buildUser(EMPLOYEE_USERNAME, PASSWORD, Role.EMPLOYEE));
     }
 
     @Test
-    public void test1() throws Exception {
+    public void testRootPathDoesNotRequireAuthentication() throws Exception {
         mockMvc.perform(get("/"))
             .andExpect(status().isOk());
     }
 
     @Test
-    public void test2() throws Exception {
+    public void testGettingTasksRequiresAuthorization() throws Exception {
         mockMvc.perform(get("/tasks"))
             .andExpect(status().isUnauthorized());
     }
 
     @Test
     // @WithMockUser(authorities = "MANAGER")
-    public void test3() throws Exception {
+    public void testManagerCanGetTasks() throws Exception {
         mockMvc.perform(get("/tasks")
-            .with(httpBasic("emusk", "1234")))
+            .with(httpBasic(MANAGER_USERNAME, PASSWORD)))
             .andExpect(status().isOk());
     }
 
     @Test
     // @WithMockUser(authorities = "EMPLOYEE")
-    public void test4() throws Exception {
+    public void testEmployeeCannotGetTasks() throws Exception {
         mockMvc.perform(get("/tasks")
-            .with(httpBasic("shawking", "1234")))
+            .with(httpBasic(EMPLOYEE_USERNAME, PASSWORD)))
             .andExpect(status().isForbidden());
     }
 }

@@ -11,4 +11,12 @@ public class URIUtils {
         int lastSlashIndex = uri.lastIndexOf(StringConstants.SLASH);
         return Integer.parseInt(uri.substring(lastSlashIndex + 1));
     }
+
+    public static String buildURIFromId(int id) {
+        // Full URIs are
+        // http://localhost:8080/users/{id} for User
+        // http://localhost:8080/tasks/{id} for Task
+        // but /{id} also works
+        return StringConstants.SLASH + id;
+    }
 }

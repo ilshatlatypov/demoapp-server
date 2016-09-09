@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import ru.jvdev.demoapp.server.entity.Task;
+import ru.jvdev.demoapp.server.utils.MediaTypes;
 import ru.jvdev.demoapp.server.utils.URIUtils;
 
 /**
@@ -29,7 +30,7 @@ public class UserController {
     @Autowired
     TaskRepository taskRepository;
 
-    @RequestMapping(method = PUT, path = "/users/{id}/tasks", consumes = "text/uri-list")
+    @RequestMapping(method = PUT, path = "/users/{id}/tasks", consumes = MediaTypes.URI_LIST)
     @PreAuthorize("hasAuthority('MANAGER')")
     public @ResponseBody ResponseEntity<?> assignTasksToUser(@PathVariable("id") int userId,
                                                              @RequestBody ResourceSupport taskURIs) {
