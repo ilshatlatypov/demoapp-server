@@ -1,6 +1,5 @@
 Tests
     get rid of duplications in test classes
-    different profiles for normal run and for tests
 
 Security
     do not drop-create data on each startup, add mode for filling data
