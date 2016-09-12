@@ -1,6 +1,2 @@
-Security
-    do not drop-create data on each startup, add mode for filling data
-
-Other
-    add comments for task
-    add 'done' field
+add comments for task
+add 'done' field for task
