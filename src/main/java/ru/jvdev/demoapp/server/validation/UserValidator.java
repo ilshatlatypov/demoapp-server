@@ -7,6 +7,7 @@ import org.springframework.validation.Validator;
 
 import ru.jvdev.demoapp.server.entity.User;
 import ru.jvdev.demoapp.server.repository.UserRepository;
+import ru.jvdev.demoapp.server.utils.PropertyNames;
 
 /**
  * @author <a href="mailto:ilatypov@wiley.com">Ilshat Latypov</a>
@@ -29,7 +30,7 @@ public class UserValidator implements Validator {
         User existingUser = userRepository.findByUsername(user.getUsername());
 
         if (existingUser != null && existingUser.getId() != user.getId()) {
-            errors.rejectValue("username", "unique");
+            errors.rejectValue(PropertyNames.USERNAME, "unique");
         }
     }
 }

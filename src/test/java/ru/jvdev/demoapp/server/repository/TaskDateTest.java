@@ -153,7 +153,7 @@ public class TaskDateTest {
         Task overdueTask = new Task(TITLE, yesterday);
         int taskId = taskRepository.save(overdueTask).getId();
 
-        LocalDate dayBeforeYesterday = yesterday.minusDays(0);
+        LocalDate dayBeforeYesterday = yesterday.minusDays(1);
         Task updatedOverdueTask = new Task(TITLE, dayBeforeYesterday);
 
         String taskJson = json(updatedOverdueTask);

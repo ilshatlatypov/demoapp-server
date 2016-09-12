@@ -11,6 +11,7 @@ import org.springframework.validation.Validator;
 
 import ru.jvdev.demoapp.server.entity.Task;
 import ru.jvdev.demoapp.server.repository.TaskRepository;
+import ru.jvdev.demoapp.server.utils.PropertyNames;
 
 /**
  * @author <a href="mailto:ilatypov@wiley.com">Ilshat Latypov</a>
@@ -37,16 +38,17 @@ public class TaskValidator implements Validator {
 
         LocalDate today = LocalDate.now();
 
+        boolean rejectDate;
         if (id == 0) {
-            if (date.isBefore(today)) {
-                errors.rejectValue("date", "notpast");
-            }
+            rejectDate = date.isBefore(today);
         } else {
             entityManager.detach(t);
             LocalDate existingDate = taskRepository.findOne(id).getDate();
-            if (!date.equals(existingDate) && date.isBefore(today)) {
-                errors.rejectValue("date", "notpast");
-            }
+            rejectDate = !date.equals(existingDate) && date.isBefore(today);
+        }
+
+        if (rejectDate) {
+            errors.rejectValue(PropertyNames.DATE, "notpast");
         }
     }
 }
