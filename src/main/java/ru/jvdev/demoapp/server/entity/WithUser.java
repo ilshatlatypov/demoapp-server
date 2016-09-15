@@ -1,6 +1,6 @@
 package ru.jvdev.demoapp.server.entity;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import org.springframework.data.rest.core.config.Projection;
 
@@ -12,6 +12,6 @@ import org.springframework.data.rest.core.config.Projection;
 public interface WithUser {
     int getId();
     String getTitle();
-    Date getDate();
+    LocalDate getDate();
     User getUser();
 }
