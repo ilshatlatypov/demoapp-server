@@ -22,6 +22,12 @@ public class AccessRules {
         return isManager(authentication) || authenticatedUsername.equals(paramUsername);
     }
 
+    public boolean ifManagerOrUserSearchesHisTasks(Authentication authentication, HttpServletRequest request) {
+        String authenticatedUsername = authentication.getName();
+        String paramUsername = request.getParameter(USERNAME);
+        return isManager(authentication) || authenticatedUsername.equals(paramUsername);
+    }
+
     private static boolean isManager(Authentication authentication) {
         return authentication.getAuthorities().stream()
             .map(GrantedAuthority::getAuthority)
