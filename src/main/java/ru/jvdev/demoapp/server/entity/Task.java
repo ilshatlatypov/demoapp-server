@@ -37,12 +37,15 @@ public class Task {
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate date;
+    private boolean done;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
     // required for JPA
-    public Task() {}
+    public Task() {
+        this.done = false;
+    }
 
     public Task(String title, LocalDate date) {
         this.title = title;
