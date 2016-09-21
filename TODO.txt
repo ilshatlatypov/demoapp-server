@@ -1,2 +1,3 @@
 add comments for task
-add 'done' field for task
+preauthorize for tasks + unit tests
+TaskRestRepository.findByUserUsername + unit tests (FindTasksByUsernameTest)
