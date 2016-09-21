@@ -166,6 +166,35 @@ public class TaskDateTest {
             .andExpect(jsonPath("$.errors[0].message", is("must be today or future date")));
     }
 
+    @Test
+    public void testNullDateIsNotOkOnCreate() throws Exception {
+        String taskJson = json(new Task(TITLE, null));
+        mockMvc.perform(post("/tasks")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(taskJson))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.errors", hasSize(1)))
+            .andExpect(jsonPath("$.errors[0].property", is("date")))
+            .andExpect(jsonPath("$.errors[0].message", is("may not be null")));
+    }
+
+    @Test
+    public void testNullDateIsNotOkOnUpdate() throws Exception {
+        LocalDate anyDate = LocalDate.now();
+        Task task = taskRepository.save(new Task(TITLE, anyDate));
+
+        task.setDate(null);
+
+        String taskJson = json(task);
+        mockMvc.perform(put("/tasks/" + task.getId())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(taskJson))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.errors", hasSize(1)))
+            .andExpect(jsonPath("$.errors[0].property", is("date")))
+            .andExpect(jsonPath("$.errors[0].message", is("may not be null")));
+    }
+
     private String json(Object o) throws IOException {
         MockHttpOutputMessage mockHttpOutputMessage = new MockHttpOutputMessage();
         mappingJackson2HttpMessageConverter.write(o, MediaType.APPLICATION_JSON, mockHttpOutputMessage);

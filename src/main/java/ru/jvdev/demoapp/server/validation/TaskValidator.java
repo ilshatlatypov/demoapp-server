@@ -35,6 +35,9 @@ public class TaskValidator implements Validator {
         Task t = (Task) target;
         int id = t.getId();
         LocalDate date = t.getDate();
+        if (date == null) {
+            return;
+        }
 
         LocalDate today = LocalDate.now();
 
