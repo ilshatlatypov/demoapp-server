@@ -2,9 +2,11 @@ package ru.jvdev.demoapp.server;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -49,7 +51,15 @@ public class Application implements CommandLineRunner {
 
         Set<Task> tasks = getTasks();
         taskRepository.deleteAllInBatch();
-        taskRepository.save(tasks);
+        List<Task> savedTasks = taskRepository.save(tasks);
+
+        User user = userRepository.findByUsername("emp");
+        Random r = new Random();
+        List<Integer> randomTaskIds = savedTasks.stream()
+            .filter(t -> r.nextInt(10) % 10 == 0)
+            .map(Task::getId)
+            .collect(Collectors.toList());
+        taskRepository.setUserIdForTasks(user.getId(), randomTaskIds);
     }
 
     private Set<User> getUsers() {
