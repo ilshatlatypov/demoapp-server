@@ -1,7 +1,7 @@
 package ru.jvdev.demoapp.server.repository;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
@@ -14,5 +14,5 @@ import ru.jvdev.demoapp.server.entity.Task;
  */
 @RepositoryRestResource
 public interface TaskRestRepository extends PagingAndSortingRepository<Task, Integer> {
-    List<Task> findByUserUsername(@Param(USERNAME) String username);
+    Page<Task> findByUserUsername(@Param(USERNAME) String username, Pageable p);
 }
