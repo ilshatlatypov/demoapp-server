@@ -32,7 +32,8 @@ public class UserController {
 
     @RequestMapping(method = PUT, path = "/users/{id}/tasks", consumes = MediaTypes.URI_LIST)
     @PreAuthorize("hasAuthority('MANAGER')")
-    public @ResponseBody ResponseEntity<?> assignTasksToUser(@PathVariable("id") int userId,
+    @ResponseBody
+    public ResponseEntity<?> assignTasksToUser(@PathVariable("id") int userId,
                                                              @RequestBody ResourceSupport taskURIs) {
         Set<Integer> taskIds = taskURIs.getLinks().stream()
             .map(Link::getHref)
@@ -44,7 +45,8 @@ public class UserController {
 
     @RequestMapping(method = DELETE, path = "/users/{userId}/tasks/{taskId}")
     @PreAuthorize("hasAuthority('MANAGER')")
-    public @ResponseBody ResponseEntity<?> unassignTaskFromUser(@PathVariable("userId") int userId,
+    @ResponseBody
+    public ResponseEntity<?> unassignTaskFromUser(@PathVariable("userId") int userId,
                                                                 @PathVariable("taskId") int taskId) {
         Task task = taskRepository.findOne(taskId);
         if (task != null && task.getUser() != null && task.getUser().getId() == userId) {

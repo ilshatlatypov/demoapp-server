@@ -10,6 +10,7 @@ buildscript {
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'spring-boot'
+apply plugin: 'checkstyle'
 
 jar {
     baseName = 'gs-accessing-data-rest'
@@ -41,5 +42,14 @@ dependencies {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.3'
+    gradleVersion = '2.8'
 }
+
+checkstyle {
+    ignoreFailures true
+    checkstyleTest.enabled = false
+}
+
+//tasks.withType(JavaCompile) {
+//    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+//}

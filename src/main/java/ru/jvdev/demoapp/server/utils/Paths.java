@@ -5,6 +5,7 @@ package ru.jvdev.demoapp.server.utils;
  * @since 09.09.2016
  */
 public interface Paths {
+    String TASKS = "/tasks";
     String FIND_USER_BY_USERNAME = "/users/search/findByUsername";
     String FIND_TASKS_BY_USERNAME = "/tasks/search/findByUserUsername";
 }

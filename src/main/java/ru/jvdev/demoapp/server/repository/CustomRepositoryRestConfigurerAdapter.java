@@ -8,10 +8,10 @@ import org.springframework.data.rest.core.event.ValidatingRepositoryEventListene
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;
 import org.springframework.validation.Validator;
 
-import ru.jvdev.demoapp.server.validation.TaskValidator;
-import ru.jvdev.demoapp.server.validation.UserValidator;
 import ru.jvdev.demoapp.server.entity.Task;
 import ru.jvdev.demoapp.server.entity.User;
+import ru.jvdev.demoapp.server.validation.TaskValidator;
+import ru.jvdev.demoapp.server.validation.UserValidator;
 
 /**
  * @author <a href="mailto:ilatypov@wiley.com">Ilshat Latypov</a>
@@ -19,6 +19,9 @@ import ru.jvdev.demoapp.server.entity.User;
  */
 @Configuration
 public class CustomRepositoryRestConfigurerAdapter extends RepositoryRestConfigurerAdapter {
+
+    private static final String BEFORE_CREATE = "beforeCreate";
+    private static final String BEFORE_SAVE = "beforeSave";
 
     @Autowired
     @Qualifier("mvcValidator")
@@ -35,13 +38,13 @@ public class CustomRepositoryRestConfigurerAdapter extends RepositoryRestConfigu
 
     @Override
     public void configureValidatingRepositoryEventListener(ValidatingRepositoryEventListener validatingListener) {
-        validatingListener.addValidator("beforeCreate", validator);
-        validatingListener.addValidator("beforeSave", validator);
+        validatingListener.addValidator(BEFORE_CREATE, validator);
+        validatingListener.addValidator(BEFORE_SAVE, validator);
 
-        validatingListener.addValidator("beforeCreate", userValidator);
-        validatingListener.addValidator("beforeSave", userValidator);
+        validatingListener.addValidator(BEFORE_CREATE, userValidator);
+        validatingListener.addValidator(BEFORE_SAVE, userValidator);
 
-        validatingListener.addValidator("beforeCreate", taskValidator);
-        validatingListener.addValidator("beforeSave", taskValidator);
+        validatingListener.addValidator(BEFORE_CREATE, taskValidator);
+        validatingListener.addValidator(BEFORE_SAVE, taskValidator);
     }
 }

@@ -1,8 +1,6 @@
 package ru.jvdev.demoapp.server.repository;
 
 import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
@@ -60,9 +58,6 @@ public class AssignTasksToUserTest {
             .webAppContextSetup(webApplicationContext)
             .apply(springSecurity())
             .build();
-
-        Calendar cal = new GregorianCalendar();
-        cal.add(Calendar.MINUTE, 5);
 
         taskRepository.deleteAllInBatch();
         taskId = taskRepository.save(new Task("Launch rocket", LocalDate.now())).getId();

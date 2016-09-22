@@ -29,6 +29,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 import ru.jvdev.demoapp.server.Application;
 import ru.jvdev.demoapp.server.entity.Task;
+import ru.jvdev.demoapp.server.utils.Paths;
+import ru.jvdev.demoapp.server.utils.PropertyNames;
 
 /**
  * @author <a href="mailto:ilatypov@wiley.com">Ilshat Latypov</a>
@@ -55,6 +57,7 @@ public class TaskDateTest {
 
     @Autowired
     void setConverters(HttpMessageConverter<?>[] converters) {
+        //noinspection OptionalGetWithoutIsPresent
         mappingJackson2HttpMessageConverter = Arrays.stream(converters)
             .filter(hmc -> hmc instanceof MappingJackson2HttpMessageConverter)
             .findAny().get();
@@ -71,7 +74,7 @@ public class TaskDateTest {
     @Test
     public void testTodayIsOkOnCreate() throws Exception {
         String taskJson = json(new Task(TITLE, today));
-        mockMvc.perform(post("/tasks")
+        mockMvc.perform(post(Paths.TASKS)
             .contentType(MediaType.APPLICATION_JSON)
             .content(taskJson))
             .andExpect(status().isCreated());
@@ -81,7 +84,7 @@ public class TaskDateTest {
     public void testFutureDateIsOkOnCreate() throws Exception {
         LocalDate tomorrow = today.plusDays(1);
         String taskJson = json(new Task(TITLE, tomorrow));
-        mockMvc.perform(post("/tasks")
+        mockMvc.perform(post(Paths.TASKS)
             .contentType(MediaType.APPLICATION_JSON)
             .content(taskJson))
             .andExpect(status().isCreated());
@@ -91,12 +94,12 @@ public class TaskDateTest {
     public void testPastDateIsNotOkOnCreate() throws Exception {
         LocalDate yesterday = today.minusDays(1);
         String taskJson = json(new Task(TITLE, yesterday));
-        mockMvc.perform(post("/tasks")
+        mockMvc.perform(post(Paths.TASKS)
             .contentType(MediaType.APPLICATION_JSON)
             .content(taskJson))
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("$.errors", hasSize(1)))
-            .andExpect(jsonPath("$.errors[0].property", is("date")))
+            .andExpect(jsonPath("$.errors[0].property", is(PropertyNames.DATE)))
             .andExpect(jsonPath("$.errors[0].message", is("must be today or future date")));
     }
 
@@ -162,19 +165,19 @@ public class TaskDateTest {
             .content(taskJson))
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("$.errors", hasSize(1)))
-            .andExpect(jsonPath("$.errors[0].property", is("date")))
+            .andExpect(jsonPath("$.errors[0].property", is(PropertyNames.DATE)))
             .andExpect(jsonPath("$.errors[0].message", is("must be today or future date")));
     }
 
     @Test
     public void testNullDateIsNotOkOnCreate() throws Exception {
         String taskJson = json(new Task(TITLE, null));
-        mockMvc.perform(post("/tasks")
+        mockMvc.perform(post(Paths.TASKS)
             .contentType(MediaType.APPLICATION_JSON)
             .content(taskJson))
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("$.errors", hasSize(1)))
-            .andExpect(jsonPath("$.errors[0].property", is("date")))
+            .andExpect(jsonPath("$.errors[0].property", is(PropertyNames.DATE)))
             .andExpect(jsonPath("$.errors[0].message", is("may not be null")));
     }
 
@@ -191,10 +194,11 @@ public class TaskDateTest {
             .content(taskJson))
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("$.errors", hasSize(1)))
-            .andExpect(jsonPath("$.errors[0].property", is("date")))
+            .andExpect(jsonPath("$.errors[0].property", is(PropertyNames.DATE)))
             .andExpect(jsonPath("$.errors[0].message", is("may not be null")));
     }
 
+    @SuppressWarnings("unchecked")
     private String json(Object o) throws IOException {
         MockHttpOutputMessage mockHttpOutputMessage = new MockHttpOutputMessage();
         mappingJackson2HttpMessageConverter.write(o, MediaType.APPLICATION_JSON, mockHttpOutputMessage);
