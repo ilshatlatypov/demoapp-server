@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import static ru.jvdev.demoapp.server.utils.RequestParamNames.USERNAME;
 import ru.jvdev.demoapp.server.entity.User;
 
 /**
@@ -11,5 +12,5 @@ import ru.jvdev.demoapp.server.entity.User;
  */
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
-    User findByUsername(@Param("username") String username);
+    User findByUsername(@Param(USERNAME) String username);
 }
