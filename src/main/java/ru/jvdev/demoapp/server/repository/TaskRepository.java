@@ -22,6 +22,12 @@ public interface TaskRepository extends JpaRepository<Task, Integer> {
     @RestResource(path = "allByUsername", rel = "allByUsername")
     Page<Task> findByUserUsername(@Param(USERNAME) String username, Pageable p);
 
+    @RestResource(path = "notDone", rel = "notDone")
+    Page<Task> findByDoneFalse(Pageable p);
+
+    @RestResource(path = "done", rel = "done")
+    Page<Task> findByDoneTrue(Pageable p);
+
     @RestResource(path = "notDoneByUsername", rel = "notDoneByUsername")
     Page<Task> findByDoneFalseAndUserUsername(@Param(USERNAME) String username, Pageable p);
 

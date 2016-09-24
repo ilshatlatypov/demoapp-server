@@ -34,7 +34,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
             .authorizeRequests()
                 .antMatchers("/").permitAll()
-                .antMatchers(Paths.FIND_TASKS_BY_USERNAME)
+                .antMatchers("/tasks/search/*")
                     .access("@accessRules.ifManagerOrUserSearchesHisTasks(authentication,request)")
                 .antMatchers("/tasks/*")
                     .access("@accessRules.ifManagerOrTaskOwner(authentication,request)")
