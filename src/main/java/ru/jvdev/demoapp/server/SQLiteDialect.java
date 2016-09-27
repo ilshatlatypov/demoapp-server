@@ -45,6 +45,7 @@ public class SQLiteDialect extends Dialect {
         registerFunction("substring", new StandardSQLFunction(SUBSTR, StringType.INSTANCE));
     }
 
+    @SuppressWarnings("deprecation")
     public boolean supportsIdentityColumns() {
         return true;
     }
@@ -55,6 +56,7 @@ public class SQLiteDialect extends Dialect {
     }
     */
 
+    @SuppressWarnings("deprecation")
     public boolean hasDataTypeInIdentityColumn() {
         return false; // As specify in NHibernate dialect
     }
@@ -68,11 +70,13 @@ public class SQLiteDialect extends Dialect {
     }
     */
 
+    @SuppressWarnings("deprecation")
     public String getIdentityColumnString() {
         // return "integer primary key autoincrement";
         return INTEGER;
     }
 
+    @SuppressWarnings("deprecation")
     public String getIdentitySelectString() {
         return "select last_insert_rowid()";
     }

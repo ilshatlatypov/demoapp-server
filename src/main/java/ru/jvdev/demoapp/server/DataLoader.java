@@ -3,7 +3,6 @@ package ru.jvdev.demoapp.server;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -54,9 +53,8 @@ public class DataLoader implements CommandLineRunner {
         List<Task> savedTasks = taskRepository.save(tasks);
 
         User user = userRepository.findByUsername("emp");
-        Random r = new Random();
         List<Integer> randomTaskIds = savedTasks.stream()
-            .filter(t -> r.nextInt(10) % 10 == 0)
+            .filter(t -> Math.random() < 0.2)
             .map(Task::getId)
             .collect(Collectors.toList());
         taskRepository.setUserIdForTasks(user.getId(), randomTaskIds);
@@ -101,14 +99,14 @@ public class DataLoader implements CommandLineRunner {
         return users;
     }
 
+    // CHECKSTYLE:OFF MagicNumberCheck
     private Set<Task> getTasks() {
         LocalDate today = LocalDate.now();
         final int[] daysFromToday = {0};
-        final Random r = new Random();
-        final int bound = 5;
 
+        double dayIncrementProbability = 0.2;
         Supplier<LocalDate> dateSupplier =
-            () -> today.plusDays(r.nextInt(bound) == 0 ? ++daysFromToday[0] : daysFromToday[0]);
+            () -> today.plusDays(Math.random() < dayIncrementProbability ? ++daysFromToday[0] : daysFromToday[0]);
 
         Set<Task> tasks = new HashSet<>();
         tasks.add(new Task("Заснуть под звездами", dateSupplier.get()));
@@ -168,5 +166,6 @@ public class DataLoader implements CommandLineRunner {
         tasks.add(new Task("Отдать бездомному свой завтрак", dateSupplier.get()));
         return tasks;
     }
+    // CHECKSTYLE:ON MagicNumberCheck
     // CHECKSTYLE:ON MultipleStringLiteralsCheck
 }
