@@ -13,5 +13,6 @@ public interface WithUser {
     int getId();
     String getTitle();
     LocalDate getDate();
+    boolean getDone();
     User getUser();
 }
