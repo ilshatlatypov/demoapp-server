@@ -2,6 +2,7 @@ package ru.jvdev.demoapp.server.entity;
 
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -13,6 +14,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotBlank;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -33,6 +36,8 @@ public class User {
     @Pattern(regexp = "[a-zA-Z]+")
     private String username;
     @NotBlank
+    @JsonIgnore
+    @Column(updatable = false)
     private String password;
     @NotNull
     @Enumerated(EnumType.STRING)

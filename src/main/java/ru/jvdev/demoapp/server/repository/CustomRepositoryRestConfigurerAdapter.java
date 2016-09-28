@@ -1,7 +1,9 @@
 package ru.jvdev.demoapp.server.repository;
 
+import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.core.event.ValidatingRepositoryEventListener;
@@ -46,5 +48,10 @@ public class CustomRepositoryRestConfigurerAdapter extends RepositoryRestConfigu
 
         validatingListener.addValidator(BEFORE_CREATE, taskValidator);
         validatingListener.addValidator(BEFORE_SAVE, taskValidator);
+    }
+
+    @Bean
+    UserEventHandler userEventHandler() {
+        return new UserEventHandler();
     }
 }
