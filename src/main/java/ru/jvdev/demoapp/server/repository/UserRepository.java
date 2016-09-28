@@ -17,8 +17,15 @@ import ru.jvdev.demoapp.server.entity.User;
 public interface UserRepository extends JpaRepository<User, Integer> {
     User findByUsername(@Param(USERNAME) String username);
 
+//    TODO use this search query on databases, where LIKE is case insensitive for cyrillic symbols
+//    @RestResource(path = "findByNamesStartingWith", rel = "findByNamesStartingWith")
+//    Page<User> findByFirstnameStartingWithOrLastnameStartingWith(@Param("firstname") String firstname,
+//                                                                 @Param("lastname") String lastname,
+//                                                                 Pageable p);
+
+    // search query for sqlite3, where LIKE is case sensitive for cyrillic symbols
     @RestResource(path = "findByNamesStartingWith", rel = "findByNamesStartingWith")
-    Page<User> findByFirstnameStartingWithOrLastnameStartingWith(@Param("firstname") String firstname,
-                                                                 @Param("lastname") String lastname,
-                                                                 Pageable p);
+    Page<User> findByFirstnameLowercaseStartingWithOrLastnameLowercaseStartingWith(@Param("firstname") String firstname,
+                                                                                   @Param("lastname") String lastname,
+                                                                                   Pageable p);
 }
