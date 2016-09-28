@@ -14,8 +14,6 @@ import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -42,29 +40,14 @@ public class User {
     @OneToMany(mappedBy = "user")
     private Set<Task> tasks;
 
-    @JsonIgnore
-    private String firstnameLowercase;
-    @JsonIgnore
-    private String lastnameLowercase;
-
     // required for JPA
     public User() {}
 
     public User(String firstname, String lastname, String username, String password, Role role) {
-        this.setFirstname(firstname);
-        this.setLastname(lastname);
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.username = username;
         this.password = password;
         this.role = role;
-    }
-
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-        this.firstnameLowercase = firstname.toLowerCase();
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-        this.lastnameLowercase = lastname.toLowerCase();
     }
 }
