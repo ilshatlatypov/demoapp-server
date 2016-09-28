@@ -10,7 +10,9 @@ import org.springframework.stereotype.Component;
 import static ru.jvdev.demoapp.server.utils.RequestParamNames.USERNAME;
 import ru.jvdev.demoapp.server.entity.Role;
 import ru.jvdev.demoapp.server.entity.Task;
+import ru.jvdev.demoapp.server.entity.User;
 import ru.jvdev.demoapp.server.repository.TaskRepository;
+import ru.jvdev.demoapp.server.repository.UserRepository;
 import ru.jvdev.demoapp.server.utils.URIUtils;
 
 /**
@@ -22,6 +24,8 @@ public class AccessRules {
 
     @Autowired
     TaskRepository taskRepository;
+    @Autowired
+    UserRepository userRepository;
 
     public boolean ifManagerOrUserSearchesHimself(Authentication authentication, HttpServletRequest request) {
         String authenticatedUsername = authentication.getName();
@@ -44,6 +48,13 @@ public class AccessRules {
         int taskId = URIUtils.getIdFromURI(request.getRequestURI());
         Task task = taskRepository.findOne(taskId);
         return task != null && task.getUser() != null && task.getUser().getUsername().equals(authenticatedUsername);
+    }
+
+    public boolean ifUserPatchesHimself(Authentication authentication, HttpServletRequest request) {
+        String authenticatedUsername = authentication.getName();
+        int userId = URIUtils.getIdFromURI(request.getRequestURI());
+        User userToBeModified = userRepository.findOne(userId);
+        return userToBeModified != null && authenticatedUsername.equals(userToBeModified.getUsername());
     }
 
     private static boolean isManager(Authentication authentication) {
