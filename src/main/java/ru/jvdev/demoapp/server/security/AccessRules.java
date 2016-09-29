@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import static ru.jvdev.demoapp.server.utils.RequestParamNames.USERNAME;
 import ru.jvdev.demoapp.server.entity.Role;
 import ru.jvdev.demoapp.server.entity.Task;
-import ru.jvdev.demoapp.server.entity.User;
 import ru.jvdev.demoapp.server.repository.TaskRepository;
 import ru.jvdev.demoapp.server.repository.UserRepository;
 import ru.jvdev.demoapp.server.utils.URIUtils;
@@ -51,10 +50,9 @@ public class AccessRules {
     }
 
     public boolean ifUserPatchesHimself(Authentication authentication, HttpServletRequest request) {
-        String authenticatedUsername = authentication.getName();
+        int authenticatedUserId = ((CustomUserDetails) authentication.getPrincipal()).getId();
         int userId = URIUtils.getIdFromURI(request.getRequestURI());
-        User userToBeModified = userRepository.findOne(userId);
-        return userToBeModified != null && authenticatedUsername.equals(userToBeModified.getUsername());
+        return authenticatedUserId == userId;
     }
 
     private static boolean isManager(Authentication authentication) {
