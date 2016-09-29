@@ -1,5 +1,8 @@
 package ru.jvdev.demoapp.server.repository;
 
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -7,6 +10,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.core.event.ValidatingRepositoryEventListener;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.validation.Validator;
 
 import ru.jvdev.demoapp.server.entity.Task;
@@ -47,6 +52,12 @@ public class CustomRepositoryRestConfigurerAdapter extends RepositoryRestConfigu
 
         validatingListener.addValidator(BEFORE_CREATE, taskValidator);
         validatingListener.addValidator(BEFORE_SAVE, taskValidator);
+    }
+
+    @Override
+    public void configureHttpMessageConverters(List<HttpMessageConverter<?>> messageConverters) {
+        messageConverters.add(new StringHttpMessageConverter(StandardCharsets.UTF_8));
+        super.configureHttpMessageConverters(messageConverters);
     }
 
     @Bean
