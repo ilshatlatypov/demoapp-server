@@ -16,7 +16,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import ru.jvdev.demoapp.server.entity.Task;
 import ru.jvdev.demoapp.server.entity.User;
@@ -35,10 +34,9 @@ public class UserController {
     @Autowired
     UserRepository userRepository;
 
-    @RequestMapping(method = PUT, path = "/users/{id}/tasks", consumes = MediaTypes.URI_LIST)
+    @RequestMapping(method = PUT, path = "/users/{userId}/tasks", consumes = MediaTypes.URI_LIST)
     @PreAuthorize("hasAuthority('MANAGER')")
-    @ResponseBody
-    public ResponseEntity<?> assignTasksToUser(@PathVariable("id") int userId,
+    public ResponseEntity<?> assignTasksToUser(@PathVariable int userId,
                                                @RequestBody ResourceSupport taskURIs) {
         Set<Integer> taskIds = taskURIs.getLinks().stream()
             .map(Link::getHref)
@@ -50,9 +48,8 @@ public class UserController {
 
     @RequestMapping(method = DELETE, path = "/users/{userId}/tasks/{taskId}")
     @PreAuthorize("hasAuthority('MANAGER')")
-    @ResponseBody
-    public ResponseEntity<?> unassignTaskFromUser(@PathVariable("userId") int userId,
-                                                  @PathVariable("taskId") int taskId) {
+    public ResponseEntity<?> unassignTaskFromUser(@PathVariable int userId,
+                                                  @PathVariable int taskId) {
         Task task = taskRepository.findOne(taskId);
         if (task != null && task.getUser() != null && task.getUser().getId() == userId) {
             task.setUser(null);

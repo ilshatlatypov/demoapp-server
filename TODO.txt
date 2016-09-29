@@ -1,3 +1,6 @@
-add comments for task
 preauthorize for tasks + unit tests
 TaskRestRepository.findByUserUsername + unit tests (FindTasksByUsernameTest)
+
+password field validation on setPassword
+do not show select/update User.password field instead of special setPassword and getPassword methods
+add ID to authentication object
