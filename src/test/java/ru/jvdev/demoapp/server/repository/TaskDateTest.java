@@ -13,18 +13,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.mock.http.MockHttpOutputMessage;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
 import ru.jvdev.demoapp.server.entity.Task;
 import ru.jvdev.demoapp.server.utils.Paths;
@@ -34,17 +27,10 @@ import ru.jvdev.demoapp.server.utils.PropertyNames;
  * @author <a href="mailto:ilatypov@wiley.com">Ilshat Latypov</a>
  * @since 09.09.2016
  */
-@RunWith(SpringRunner.class)
-@SpringBootTest
-@ActiveProfiles("test")
-public class TaskDateTest {
+public class TaskDateTest extends AbstractSpringTest {
 
     private static final String TITLE = "Any title";
 
-    private MockMvc mockMvc;
-
-    @Autowired
-    private WebApplicationContext webApplicationContext;
     @Autowired
     private TaskRepository taskRepository;
 
@@ -63,9 +49,7 @@ public class TaskDateTest {
 
     @Before
     public void setup() throws Exception {
-        mockMvc = MockMvcBuilders
-            .webAppContextSetup(webApplicationContext)
-            .build();
+        initMockMvc();
     }
 
     @Test

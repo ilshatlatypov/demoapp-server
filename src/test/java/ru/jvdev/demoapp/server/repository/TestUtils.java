@@ -14,4 +14,9 @@ public class TestUtils {
     public static User buildUser(String username, String password, Role role) {
         return new User("Any firstname", "Any lastname", username, password, role);
     }
+
+    public static User buildUser(String username, String password) {
+        Role anyRole = Role.EMPLOYEE;
+        return new User("Any firstname", "Any lastname", username, password, anyRole);
+    }
 }

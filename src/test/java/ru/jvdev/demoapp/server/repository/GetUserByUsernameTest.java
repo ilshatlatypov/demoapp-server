@@ -1,19 +1,11 @@
 package ru.jvdev.demoapp.server.repository;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
 import static ru.jvdev.demoapp.server.repository.TestUtils.buildUser;
 import static ru.jvdev.demoapp.server.utils.RequestParamNames.USERNAME;
@@ -24,28 +16,18 @@ import ru.jvdev.demoapp.server.utils.Paths;
  * @author <a href="mailto:ilatypov@wiley.com">Ilshat Latypov</a>
  * @since 07.09.2016
  */
-@RunWith(SpringRunner.class)
-@SpringBootTest
-@ActiveProfiles("test")
-public class GetUserByUsernameTest {
+public class GetUserByUsernameTest extends AbstractSpringTest {
 
     private static final String MANAGER_USERNAME = "managerUser";
     private static final String EMPLOYEE_USERNAME = "employeeUser";
     private static final String PASSWORD = "anypassword";
 
-    private MockMvc mockMvc;
-
-    @Autowired
-    private WebApplicationContext webApplicationContext;
     @Autowired
     private UserRepository userRepository;
 
     @Before
     public void setup() throws Exception {
-        this.mockMvc = MockMvcBuilders
-            .webAppContextSetup(webApplicationContext)
-            .apply(springSecurity())
-            .build();
+        initMockMvcWithSpringSecurity();
 
         this.userRepository.deleteAllInBatch();
         this.userRepository.save(buildUser(MANAGER_USERNAME, PASSWORD, Role.MANAGER));
