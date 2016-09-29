@@ -21,4 +21,14 @@ public class CustomUserDetails extends org.springframework.security.core.userdet
     public int getId() {
         return id;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o) && id == ((CustomUserDetails) o).id;
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

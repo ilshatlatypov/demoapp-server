@@ -8,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import static ru.jvdev.demoapp.server.utils.RequestParamNames.USERNAME;
+import static ru.jvdev.demoapp.server.utils.StringConstants.SLASH;
 import ru.jvdev.demoapp.server.entity.Role;
 import ru.jvdev.demoapp.server.entity.Task;
 import ru.jvdev.demoapp.server.repository.TaskRepository;
@@ -49,10 +50,14 @@ public class AccessRules {
         return task != null && task.getUser() != null && task.getUser().getUsername().equals(authenticatedUsername);
     }
 
-    public boolean ifUserPatchesHimself(Authentication authentication, HttpServletRequest request) {
+    public boolean ifPerformedBySameUser(Authentication authentication, HttpServletRequest request) {
         int authenticatedUserId = ((CustomUserDetails) authentication.getPrincipal()).getId();
-        int userId = URIUtils.getIdFromURI(request.getRequestURI());
-        return authenticatedUserId == userId;
+        try {
+            int userId = Integer.parseInt(request.getRequestURI().split(SLASH)[2]); // "/users/33/setPassword" -> 33
+            return authenticatedUserId == userId;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
     private static boolean isManager(Authentication authentication) {

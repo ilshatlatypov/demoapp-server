@@ -2,7 +2,6 @@ package ru.jvdev.demoapp.server.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -42,8 +41,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/tasks/**").hasAuthority(Role.MANAGER.name())
                 .antMatchers(Paths.FIND_USER_BY_USERNAME)
                     .access("@accessRules.ifManagerOrUserSearchesHimself(authentication,request)")
-                .antMatchers(HttpMethod.PATCH, "/users/*") // patch for changing password
-                    .access("@accessRules.ifUserPatchesHimself(authentication,request)")
+                .antMatchers("/users/*/setPassword")
+                    .access("@accessRules.ifPerformedBySameUser(authentication,request)")
                 .antMatchers("/users/**").hasAuthority(Role.MANAGER.name())
                 .anyRequest().authenticated()
                 .and()

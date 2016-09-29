@@ -51,6 +51,13 @@ checkstyle {
     checkstyleTest.enabled = false
 }
 
+tasks.withType(FindBugs) {
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+}
+
 //tasks.withType(JavaCompile) {
 //    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
 //}
