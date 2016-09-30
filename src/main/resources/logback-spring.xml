@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+    <springProfile name="dev">
+        <logger name="org.apache.coyote.http11.Http11InputBuffer" level="DEBUG"/>
+        <logger name="org.hibernate.SQL" level="DEBUG"/>
+        <logger name="org.springframework.web.servlet.DispatcherServlet" level="DEBUG"/>
+        <logger name="org.springframework.web.servlet.mvc.method.annotation.HttpEntityMethodProcessor" level="DEBUG"/>
+        <logger name="org.springframework.security.web.authentication.www.BasicAuthenticationFilter" level="DEBUG"/>
+        <logger name="org.springframework.security.web.authentication.intercept.FilterSecurityInterceptor" level="DEBUG"/>
+        <logger name="ru.jvdev.demoapp.server" level="DEBUG"/>
+    </springProfile>
+
+    <springProfile name="test">
+        <root level="OFF"/>
+    </springProfile>
+
+</configuration>

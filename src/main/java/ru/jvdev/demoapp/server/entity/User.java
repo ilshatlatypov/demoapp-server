@@ -19,9 +19,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @Entity
 @Data
+@ToString(exclude = "password")
 @EqualsAndHashCode(exclude = "tasks")
 public class User {
 
