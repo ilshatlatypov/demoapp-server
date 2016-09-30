@@ -1,12 +1,9 @@
 package ru.jvdev.demoapp.server.repository;
 
-import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Arrays;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -15,9 +12,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.mock.http.MockHttpOutputMessage;
 
 import ru.jvdev.demoapp.server.entity.Task;
 import ru.jvdev.demoapp.server.utils.Paths;
@@ -34,18 +28,7 @@ public class TaskDateTest extends AbstractSpringTest {
     @Autowired
     private TaskRepository taskRepository;
 
-    private HttpMessageConverter mappingJackson2HttpMessageConverter;
-
     private LocalDate today = LocalDate.now();
-
-    @Autowired
-    void setConverters(HttpMessageConverter<?>[] converters) {
-        //noinspection OptionalGetWithoutIsPresent
-        mappingJackson2HttpMessageConverter = Arrays.stream(converters)
-            .filter(hmc -> hmc instanceof MappingJackson2HttpMessageConverter)
-            .findAny().get();
-        assertNotNull("the JSON message converter must not be null", mappingJackson2HttpMessageConverter);
-    }
 
     @Before
     public void setup() throws Exception {
@@ -177,12 +160,5 @@ public class TaskDateTest extends AbstractSpringTest {
             .andExpect(jsonPath("$.errors", hasSize(1)))
             .andExpect(jsonPath("$.errors[0].property", is(PropertyNames.DATE)))
             .andExpect(jsonPath("$.errors[0].message", is("may not be null")));
-    }
-
-    @SuppressWarnings("unchecked")
-    private String json(Object o) throws IOException {
-        MockHttpOutputMessage mockHttpOutputMessage = new MockHttpOutputMessage();
-        mappingJackson2HttpMessageConverter.write(o, MediaType.APPLICATION_JSON, mockHttpOutputMessage);
-        return mockHttpOutputMessage.getBodyAsString();
     }
 }

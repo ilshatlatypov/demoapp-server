@@ -11,6 +11,10 @@ public class TestUtils {
 
     private TestUtils() {}
 
+    public static User buildUser() {
+        return new User("Any firstname", "Any lastname", "anyusername", "anypassword", Role.EMPLOYEE);
+    }
+
     public static User buildUser(String username, String password, Role role) {
         return new User("Any firstname", "Any lastname", username, password, role);
     }
@@ -18,5 +22,16 @@ public class TestUtils {
     public static User buildUser(String username, String password) {
         Role anyRole = Role.EMPLOYEE;
         return new User("Any firstname", "Any lastname", username, password, anyRole);
+    }
+
+    public static User buildUserWithNoPassword(String username) {
+        Role anyRole = Role.EMPLOYEE;
+
+        User user = new User();
+        user.setUsername(username);
+        user.setFirstname("Any firstname");
+        user.setLastname("Any lastname");
+        user.setRole(anyRole);
+        return user;
     }
 }

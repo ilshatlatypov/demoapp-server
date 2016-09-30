@@ -28,8 +28,8 @@ public class UserRestRepositoryTest extends AbstractSpringTest {
         initMockMvcWithSpringSecurity();
 
         this.userRepository.deleteAllInBatch();
-        this.userRepository.save(buildUser(MANAGER_USERNAME, PASSWORD, Role.MANAGER)).getId();
-        this.userRepository.save(buildUser(EMPLOYEE_USERNAME, PASSWORD, Role.EMPLOYEE)).getId();
+        this.userRepository.save(buildUser(MANAGER_USERNAME, PASSWORD, Role.MANAGER));
+        this.userRepository.save(buildUser(EMPLOYEE_USERNAME, PASSWORD, Role.EMPLOYEE));
     }
 
     @Test
